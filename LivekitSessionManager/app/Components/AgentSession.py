@@ -6,10 +6,10 @@ import uuid
 
 
 async def createAgentSession(res: AgentSessionRequest) -> AgentSessionResponce:
-    agentIdentity = f"agent-{uuid.uuid4()}"
+    agentIdentity: str = f"agent-{uuid.uuid4()}"
     roomname: str = res.roomname
 
-    token = (
+    token: str = (
         AccessToken(Envar.LIVEKIT_API_KEY, Envar.LIVEKIT_API_SECRET)
         .with_identity(agentIdentity)
         .with_name("Agent")

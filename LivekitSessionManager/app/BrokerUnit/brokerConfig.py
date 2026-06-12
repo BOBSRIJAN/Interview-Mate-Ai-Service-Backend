@@ -1,7 +1,7 @@
 
 from app.Config.envConfig import Envar
-from kafka import KafkaConsumer
-from kafka import KafkaProducer
+from aiokafka import AIOKafkaConsumer
+from aiokafka import AIOKafkaProducer
 import logging
 import json
 
@@ -11,10 +11,10 @@ logger: logging = logging.getLogger("uvicorn")
 class BrokerConf:
 
     @staticmethod
-    async def initKafkaConsumer() -> KafkaConsumer:
+    async def initKafkaConsumer() -> AIOKafkaConsumer:
         logger.info("Initializing Kafka Consumer Module.")
         try:
-            consumer: KafkaConsumer = KafkaConsumer(
+            consumer: AIOKafkaConsumer = AIOKafkaConsumer(
                 Envar.CONSUMER_TOPIC,
                 bootstrap_servers=Envar.KAFKA_BROKER_URL,
                 auto_offset_reset='earliest',
@@ -29,11 +29,12 @@ class BrokerConf:
         except Exception as e:
             logger.exception(f"Failed to create Kafka consumer: {e}")
 
+
     @staticmethod
-    async def initKafkaProducer() -> KafkaProducer:
+    async def initKafkaProducer() -> AIOKafkaProducer:
         logger.info("Initializing Kafka Producer Module.")
         try:
-            producer = KafkaProducer(
+            producer = AIOKafkaProducer(
                 bootstrap_servers=Envar.KAFKA_BROKER_URL,
                 value_serializer=lambda v: json.dumps(v).encode('utf-8')
             )

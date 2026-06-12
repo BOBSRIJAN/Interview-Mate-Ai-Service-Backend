@@ -7,7 +7,7 @@ import logging
 import json
 
 logger = logging.getLogger("uvicorn")
-APIKEY: str = 'AIzaSyDAscjrMx-N36ypycnMRtufrLpIAfvGICI'
+APIKEY: str = ''
 ENDPOINT: str = f"https://generativelanguage.googleapis.com/v1beta/models/gemma-4-26b-a4b-it:generateContent"
 
 async def NativeGemini2_5Flash(SystemInstruction: str) -> str:

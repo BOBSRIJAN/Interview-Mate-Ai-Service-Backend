@@ -1,6 +1,6 @@
 
 from app.Config.envConfig import Envar
-from redis import Redis
+from redis.asyncio import Redis
 import logging
 
 logger = logging.getLogger("uvicorn")

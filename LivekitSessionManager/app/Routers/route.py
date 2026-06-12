@@ -17,7 +17,7 @@ async def systemStatus() -> dict:
         logger.exception(f"Faild to get the system ststus: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Faild to get the system ststus: {e}")
     return {
-        "cpupercent": process.cpu_percent(),
+        "cpupercent": psutil.cpu_percent(),
         "memorymb": process.memory_info().rss / 1024 / 1024,
         "threads": process.num_threads()
     }

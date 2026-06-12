@@ -5,14 +5,14 @@ from app.Config.envConfig import Envar
 import uuid
 
 
-async def createUserSession(res: UserSessionRequest) -> UserSessionResponce:
+async def createUserSession(req: UserSessionRequest) -> UserSessionResponce:
     roomName: str = f"Imate-room-{uuid.uuid4()}"
-    userIdentity: str = res.userid
+    userIdentity: str = req.userid
 
     token: str = (
         AccessToken(Envar.LIVEKIT_API_KEY, Envar.LIVEKIT_API_SECRET)
         .with_identity(userIdentity)
-        .with_name(res.userid)
+        .with_name(req.userid)
         .with_grants(
             VideoGrants(
                 room_join=True,
