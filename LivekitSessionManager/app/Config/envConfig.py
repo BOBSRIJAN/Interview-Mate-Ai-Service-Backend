@@ -4,7 +4,8 @@ import os
 load_dotenv()
 
 class Envar:
-    CONSUMER_TOPIC: str = os.getenv('CONSUMER_TOPIC')
+    CONSUMER_TOPIC_USER: str = os.getenv('CONSUMER_TOPIC_USER')
+    CONSUMER_TOPIC_AGENT: str = os.getenv('CONSUMER_TOPIC_AGENT')
     KAFKA_BROKER_URL: str = os.getenv("KAFKA_BROKER_URL")
     REDIS_HOST = os.getenv("REDIS_HOST")
     REDIS_PORT = os.getenv("REDIS_PORT")

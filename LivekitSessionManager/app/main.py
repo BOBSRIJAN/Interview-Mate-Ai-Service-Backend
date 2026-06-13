@@ -4,9 +4,9 @@ from app.CacheUnit.cacheMethods import cacheMethods
 from fastapi.middleware.cors import CORSMiddleware
 from app.BrokerUnit.brokerConfig import BrokerConf
 from app.CacheUnit.cacheConfig import CacheConf
-from app.Routers.controller import Workers
+from app.Services.Worker import Workers
 from contextlib import asynccontextmanager
-from app.Routers.controller import states
+from app.Services.Worker import states
 from app.Routers.route import AppRouter
 from app.Config.envConfig import Envar
 from app.Config.envConfig import Envar
@@ -29,19 +29,27 @@ async def banner() -> None:
 async def lifespan(app: FastAPI):
     await banner()
     states['Redis'] = await CacheConf.initRedis()
-    states['KafkaConsumer'] = await BrokerConf.initKafkaConsumer()
+    states['KafkaConsumerUser'] = await BrokerConf.initKafkaConsumerForUser()
+    states['KafkaConsumerAgent'] = await BrokerConf.initKafkaConsumerForAgent()
     states['KafkaProducer'] = await BrokerConf.initKafkaProducer()
     userWorker = asyncio.create_task(Workers.userWorker())
+    agentWorker = asyncio.create_task(Workers.agentWorker())
 
     yield
 
     userWorker.cancel()
+    agentWorker.cancel()
     await BrokerMethods.shutdownConsumer(states=states)
     await BrokerMethods.shutdownProducer(states=states)
     await cacheMethods.shutdownRadis(states=states)
-    
 
-app: FastAPI = FastAPI(title="Livekit-Session-Manager", lifespan=lifespan, docs_url=None, redoc_url=None)
+
+app: FastAPI = FastAPI(
+    title="Livekit-Session-Manager", 
+    lifespan=lifespan, 
+    docs_url=None, 
+    redoc_url=None
+)
 
 GLOBAL_HOST: str = Envar.GLOBAL_HOST
 ALLOWHOST = ["http://localhost:5173", GLOBAL_HOST]

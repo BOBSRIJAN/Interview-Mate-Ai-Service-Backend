@@ -1,13 +1,13 @@
 
-from app.Schemas.Validator import AgentSessionRequest, AgentSessionResponce
+from app.Schemas.Validator import UserSessionResponce, AgentSessionResponce
 from livekit.api import AccessToken, VideoGrants
 from app.Config.envConfig import Envar
 import uuid
 
 
-async def createAgentSession(res: AgentSessionRequest) -> AgentSessionResponce:
+async def createAgentSession(req: UserSessionResponce) -> AgentSessionResponce:
     agentIdentity: str = f"agent-{uuid.uuid4()}"
-    roomname: str = res.roomname
+    roomname: str = req.roomname
 
     token: str = (
         AccessToken(Envar.LIVEKIT_API_KEY, Envar.LIVEKIT_API_SECRET)

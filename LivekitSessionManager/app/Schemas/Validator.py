@@ -21,3 +21,9 @@ class AgentSessionResponce(BaseModel):
     roomname: str
     token: str
     livekiturl: str
+    
+
+class SystemStatusResponce(BaseModel): 
+    cpupercent: int | float
+    memorymb: int | float
+    threads: int 

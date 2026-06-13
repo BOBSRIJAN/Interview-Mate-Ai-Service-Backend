@@ -22,19 +22,23 @@ class BrokerMethods:
         except Exception as e: 
             logger.exception(f"Couldn't Publish New Kafka Event: {e}")
 
+
     @staticmethod
     async def shutdownConsumer(states: dict) -> None:
-        consumer: AIOKafkaConsumer = states.get("KafkaConsumer")
+        consumerUser: AIOKafkaConsumer = states.get("KafkaConsumerUser")
+        consumerAgent: AIOKafkaConsumer = states.get("KafkaConsumerAgent")
         
-        if consumer:
+        if consumerUser and consumerAgent:
+            await consumerUser.stop()
+            await consumerAgent.stop()
             logger.info("Kafka Consumer Unit Shutdown Successfully.")
-            await consumer.stop()
+
 
     @staticmethod
     async def shutdownProducer(states: dict) -> None:
         producer: AIOKafkaProducer = states.get("KafkaProducer")
         
         if producer:
-            logger.info("Kafka Producer Unit Shutdown Successfully.")
             await producer.flush()
             await producer.stop()
+            logger.info("Kafka Producer Unit Shutdown Successfully.")

@@ -11,23 +11,43 @@ logger: logging = logging.getLogger("uvicorn")
 class BrokerConf:
 
     @staticmethod
-    async def initKafkaConsumer() -> AIOKafkaConsumer:
+    async def initKafkaConsumerForUser() -> AIOKafkaConsumer:
         logger.info("Initializing Kafka Consumer Module.")
         try:
             consumer: AIOKafkaConsumer = AIOKafkaConsumer(
-                Envar.CONSUMER_TOPIC,
+                Envar.CONSUMER_TOPIC_USER,
                 bootstrap_servers=Envar.KAFKA_BROKER_URL,
                 auto_offset_reset='earliest',
                 enable_auto_commit=False,
-                group_id='livekit.session.manager.group',
+                group_id='livekit.session.manager.user.group',
                 value_deserializer=lambda v: json.loads(v.decode('utf-8'))
             )
 
-            logger.info("Kafka consumer connected successfully.")
+            logger.info("Kafka consumer for user connected successfully.")
             return consumer
 
         except Exception as e:
-            logger.exception(f"Failed to create Kafka consumer: {e}")
+            logger.exception(f"Failed to create Kafka consumer for user: {e}")
+
+
+    @staticmethod
+    async def initKafkaConsumerForAgent() -> AIOKafkaConsumer:
+        logger.info("Initializing Kafka Consumer Module.")
+        try:
+            consumer: AIOKafkaConsumer = AIOKafkaConsumer(
+                Envar.CONSUMER_TOPIC_AGENT,
+                bootstrap_servers=Envar.KAFKA_BROKER_URL,
+                auto_offset_reset='earliest',
+                enable_auto_commit=False,
+                group_id='livekit.session.manager.agent.group',
+                value_deserializer=lambda v: json.loads(v.decode('utf-8'))
+            )
+
+            logger.info("Kafka consumer for agent connected successfully.")
+            return consumer
+
+        except Exception as e:
+            logger.exception(f"Failed to create Kafka consumer for agent: {e}")
 
 
     @staticmethod
