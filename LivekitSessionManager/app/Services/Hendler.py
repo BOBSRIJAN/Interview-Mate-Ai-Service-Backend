@@ -38,7 +38,7 @@ class Hendlers:
             data=res
         )
 
-        await redis.set(name=userData.userid, value=json.dumps(res), exat=900)
+        await redis.set(name=userData.userid, value=json.dumps(res), ex=900)
         logger.info("User Session Generated Successfully and Kafka Event Publish.")
 
 

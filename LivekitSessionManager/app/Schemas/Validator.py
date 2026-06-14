@@ -27,3 +27,17 @@ class SystemStatusResponce(BaseModel):
     cpupercent: int | float
     memorymb: int | float
     threads: int 
+
+
+class CurrentUserSessionRequest(BaseModel):
+    userid: str | int
+
+
+class CurrentUserSessionResponce(BaseModel):
+    userid: str | None
+    topics: list[str] | None = None
+    paragraph: str | None = None
+    duration: int | None
+    roomname: str | None
+    token: str | None
+    livekiturl: str | None

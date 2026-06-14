@@ -1,6 +1,10 @@
 
-from app.Schemas.Validator import SystemStatusResponce
 from app.Routers.controller import apiController
+from app.Schemas.Validator import (
+    SystemStatusResponce,
+    CurrentUserSessionRequest,
+    CurrentUserSessionResponce,
+)
 from fastapi import APIRouter, status
 import logging
 
@@ -12,3 +16,7 @@ AppRouter: APIRouter = APIRouter(prefix="/api/v1/livekitsessionmanager", tags=["
 @AppRouter.get("/systemstatus", response_model=SystemStatusResponce, status_code=status.HTTP_200_OK)
 async def systemStatus() -> SystemStatusResponce:
     return await apiController._systemstatus()
+
+@AppRouter.post("/currentusersession", response_model=CurrentUserSessionResponce, status_code=status.HTTP_200_OK)
+async def currentUserSession(req: CurrentUserSessionRequest) -> CurrentUserSessionResponce:
+    return await apiController._currentusersession(req=req)

@@ -172,6 +172,29 @@ Uses `psutil` + current PID.
 
 ---
 
+#### `POST /api/v1/livekitsessionmanager/currentusersession`
+**File:** `app/Routers/controller.py`
+
+Fetches the cached **current user session** from Redis for the given `userid`.
+
+**Request body** (`CurrentUserSessionRequest`):
+- `userid`: `string | int`
+
+**Response body** (`CurrentUserSessionResponce`):
+- `userid`
+- `topics` (optional)
+- `paragraph` (optional)
+- `duration` (optional)
+- `roomname`
+- `token`
+- `livekiturl`
+
+**Behavior:**
+- If Redis has no data for `userid`, the API returns `404 User Data Not Found`.
+- Otherwise it parses the stored JSON and validates it with Pydantic.
+
+---
+
 ## Configuration (Environment Variables)
 
 **File:** `app/Config/envConfig.py`
